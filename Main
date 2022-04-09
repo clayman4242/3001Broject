@@ -4,10 +4,7 @@
 // This layout will only serve as a logical template
 // to gve an idea of how the code will operate at
 // a basic level, we can add bits and snips of code
-// as we go using the pull requests from guthub
-// its super useful i reccomended we do it strongly
-// so that we can work on it simoultaniously
-// without having to directly share
+// as we go.
 
 // Includes
 #include <Arduino.h>
@@ -18,13 +15,20 @@
 // Function Prototypes
 
 // Defines
-#define LEDR DDC5 // Red LED is connected to Pin PC5
-#define LEDB DDC3 // Blue LED is connected to Pin PC3
-#define LEDY DDC2 // Yellow LED is connected to Pin PC2
-#define LEDG DDC1 // Green LED is connected to Pin PC1
+#define BUT1 DDC5 // 1st Button is connected to Pin PC5
+#define BUT2 DDC3 // Blue LED is connected to Pin PC3
+#define BUT3 DDC2 // Yellow LED is connected to Pin PC2
+#define BUT4 DDC1 // Green LED is connected to Pin PC1
 #define SERV DDC4 // Servo is connected to Pin PC4
 #define BUZZ DDD0 // Buzzer is connected to Pin PD0
+#define PRESCALER 256 // 1,8,64,256,1024
+#define MAXDUTY 255
 
+// Define variables
+int xmin = 0;
+int xmax = 180; 
+int ymax = 135; // 135 is exactly 180 degrees not 150 
+int ymin = 22;
 
 int main()
 {
@@ -32,43 +36,102 @@ int main()
   // Intitial conditions
   // Button initialization
 
+  // 7 Segment initialization UNFINISHED
+  // const uint8_t num[10] = {0b01111111, 0b00010011, 0b10111101, 0b10110111, 0b11010011, 0b11100111, 0b11101111, 0b00110011, 0b11111111, 0b11110111};
+  // // 0        // 1        // 2        // 3        // 4        // 5        // 6        // 7        // 8        // 9
+  // DDRB |= 0xFF;           // Set all pins of Port B as OUTPUT (7-segment)
+  // DDRB |= (1 << BUT1);    // Set pin 11 of PortB to output (LED)
+  // DDRB |= (1 << BUT2);    // Set pin 12 of PortB to output (LED)
+  // DDRB |= (1 << BUT3);    // Set pin 13 of PortB to output (LED)
+  // DDRB |= (1 << BUT4);    // Set pin 13 of PortB to output (LED)
+  // DDRC &= ~(1 << BUTTON); // Set pin A4 of PortC to INPUT
+  // PORTC |= (1 << BUTTON); // Set Button pin of PORTC Register
 
 
+  // Temporary array and Text array initialization
+  int TempArr [4]; // make sure to fill with Null character after each use
+  int DisplayText [50];
+  
 
-  // 7 Segment initialization
-const uint8_t num[10] = {0b01111111, 0b00010011, 0b10111101, 0b10110111, 0b11010011, 0b11100111, 0b11101111, 0b00110011, 0b11111111, 0b11110111}; 
-                          // 0        // 1        // 2        // 3        // 4        // 5        // 6        // 7        // 8        // 9
-  DDRB |= 0xFF;                           // Set all pins of Port B as OUTPUT (7-segment)
-  DDRB |= (1 << LEDG);               // Set pin 11 of PortB to output (LED)
-  DDRB |= (1 << LEDY);              // Set pin 12 of PortB to output (LED)
-  DDRB |= (1 << LEDR);                 // Set pin 13 of PortB to output (LED)
-  DDRC &= ~(1 << BUTTON);                 // Set pin A4 of PortC to INPUT
-  PORTC |= (1 << BUTTON);                 // Set Button pin of PORTC Register
-
-
-
-  while(1)
+  while (1)
   {
-    // Step 1:
+    int x = 0;
+    // Step 1(Button 1 functions):
+    if (x == 0){
+      // if button1 is pressed (High to low)
+    
+      // check to see if its long press or short press
+
+      // if long add 1 to temp array
+
+      // if short add 2 to temp array
+
+
+    }
 
     // Step 2:
+      // if button 2 is pressed, restart step 1 loop
+
 
     // Step 3:
+      // if button 3 is pressed, change x to 1 to finish step 1 loop
 
     // Step 4:
+      // print out the message to the LCD in a loop with delay of 75 ms pre character
+
+
+      DelayMs(75);
 
     // Extra features:
+    // Servo swing to alphabet display
+    // Should loop in step 4 for execution of display
+      // while 'letter' turn to x degrees
+
+    // 7 Segment display
+      // switch case 'letter' use x pins 
+
   }
 }
 
-
-
-
-
-
-
 // functions to use in main
-void delayMs(uint16_t ms)
+
+// Binary to text conversion from TempArray to TextArray (to put in step 1 loop eventually)
+  // We need to assign each character of the alphabet to a binary sequence EX: A = 12, B = 2111
+  // char A = 21;
+  // char B = 1222;
+  // char C = 1212;
+  // char D = 122;
+  // char E = 2;
+  // char F = 2212;
+  // char G = 112;
+  // char H = 2222;
+  // char I = 22;
+  // char J = 2111;
+  // char K = 121;
+  // char L = 2122;
+  // char M = 11;
+  // char N = 12;
+  // char O = 111;
+  // char P = 2112;
+  // char Q = 1121;
+  // char R = 212;
+  // char S = 222;
+  // char T = 1;
+  // char U = 221;
+  // char V = 2221;
+  // char W = 211;
+  // char X = 1221;
+  // char Y = 1211;
+  // char Z = 1122;
+//instead we can use a case switch  Ex: if TempArr[] == ####, TextArray[i] = 'letter'
+
+
+
+
+
+
+// Delay
+void DelayMs(uint16_t ms)
 {
   while (ms > 0)
   {
@@ -76,3 +139,65 @@ void delayMs(uint16_t ms)
     ms--;
   }
 }
+
+
+
+// Servo stuff
+
+void DegreeConvert (uint8_t V){
+  V = (((V - xmin)/(xmax - xmin)) * (ymax - ymin)) + ymin;
+  OCR1A = V;
+  _delay_ms(5);
+}
+
+void Timer1_PWM_Init()
+{
+	TCCR1B = 0x00; // Disable Timer 1 until needed
+
+	TCCR1A = 0x00; // initialize TCCR1A to zeros
+	
+	// OCR1A = 22 = 0 deg	94 = 90 deg		135 = 180 deg
+	OCR1A = 22;		// set PWM for servo 90 degrees
+	OCR1B = 135;	// set PWM for servo 180 degrees
+	ICR1 = 1250;	// set ICR1 for 50Hz
+
+	// Set as Fast PWM (Mode 14), non-inverting mode for OC1A and inverting mode for OC1B
+	TCCR1A |= (1 << WGM11) | (1 << COM1A1) | (1 << COM1B1) ;
+	TCCR1B |= (1 << WGM12) |(1 << WGM13);
+
+	Timer1_Prescaler(); // set prescaler and start timer
+}
+
+void Timer1_Prescaler()
+{
+	TCCR1B &= ~((1 << CS10) | (1 << CS11) | (1 << CS12)); // Disable Timer 0 until needed
+
+	switch (PRESCALER)
+	{
+	case 1:
+		// N = 1      F =  121.951Hz     T = 8.199msec    // 5msec Oscilliscope scale
+		TCCR1B |= (1 << CS10); // setting prescaler to 1
+		break;
+	case 8:
+		// N = 8      F =  15.25Hz     T =  0.065sec    // 20msec Oscilliscope scale
+		TCCR1B |= (1 << CS11); // setting prescaler to 8
+		break;
+	case 64:
+		// N = 64      F =  1.959Hz     T = 0.510sec    // 0.1sec Oscilliscope scale
+		TCCR1B |= (1 << CS10) | (1 << CS11); // setting prescaler to 64
+		break;
+	case 256:
+		// N = 256      F =  0.5Hz     T = 2sec    // 0.5sec Oscilliscope scale
+		TCCR1B |= (1 << CS12); // setting prescaler to 256
+		break;
+	case 1024:
+		// N = 1024      F =  0.116Hz     T = 8.6sec    // 1sec Oscilliscope scale
+		TCCR1B |= (1 << CS10) | (1 << CS12); // setting prescaler to 1024
+		break;
+	default:
+		TCCR1B |= (1 << CS10); // setting prescaler to 1
+	}
+}
+
+// We should also relate each alphabetical letter to a certain position in degrees
+
