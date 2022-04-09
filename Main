@@ -50,17 +50,18 @@ int main()
 
   // Temporary array and Text array initialization
   int TempArr [4]; // make sure to fill with Null character after each use
-  int DisplayText [50];
+  int DisplayText [50]; // send to LCD 
   
 
   while (1)
   {
-    int x = 0;
+    int p = 0;
     // Step 1(Button 1 functions):
-    if (x == 0){
+    if (p == 0){
       // if button1 is pressed (High to low)
+        // Sound buzzer while button is on active low, stop if back to high
     
-      // check to see if its long press or short press
+      // check to see if its long press or short press, long 200ms, short 100ms
 
       // if long add 1 to temp array
 
@@ -74,13 +75,13 @@ int main()
 
 
     // Step 3:
-      // if button 3 is pressed, change x to 1 to finish step 1 loop
+      // if button 3 is pressed, change p to 1 to finish step 1 loop
 
     // Step 4:
-      // print out the message to the LCD in a loop with delay of 75 ms pre character
+      // print out the message to the LCD in a loop with delay of 500 ms pre character
 
 
-      DelayMs(75);
+      DelayMs(500);
 
     // Extra features:
     // Servo swing to alphabet display
@@ -90,6 +91,10 @@ int main()
     // 7 Segment display
       // switch case 'letter' use x pins 
 
+    // Buzzer
+      // buzzes long (200 ms) and short (100 ms) for each number in TempArr, 2 for short, 1 for long
+      // buzzer should make noise before displaying to LCD 
+      // Buzzer noise should be synchronized with 7 segment dispaly while reading out character
   }
 }
 
@@ -147,7 +152,6 @@ void DelayMs(uint16_t ms)
 void DegreeConvert (uint8_t V){
   V = (((V - xmin)/(xmax - xmin)) * (ymax - ymin)) + ymin;
   OCR1A = V;
-  _delay_ms(5);
 }
 
 void Timer1_PWM_Init()
@@ -200,4 +204,3 @@ void Timer1_Prescaler()
 }
 
 // We should also relate each alphabetical letter to a certain position in degrees
-
