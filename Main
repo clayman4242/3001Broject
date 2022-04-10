@@ -82,8 +82,6 @@ int main()
       PCMSK2 |= (1 << PCINT19);                 // PCINT19 - pin 3 - button 1
       PCMSK1 |= (1 << PCINT8) | (1 << PCINT9);  // set PCINT8 and PCINT9 to trigger an interrupt on state change
       sei();                                    // turn on interrupts
-      
-      
 
       if (((PINC & (1 << BUT1)) >> BUT1) == LOW)
       {
@@ -97,19 +95,12 @@ int main()
           TempArr[i] = 2;
           } 
           else                                          // condition for timer >= 101
-          }
+          {
           TempArr[i] = 1;
-          { // if long add 1 to temp array
+          } // if long add 1 to temp array
         }
         
       }
-
-      
-
-      
-
-      // if short add 2 to temp array
-
       // convert into DisplayText
       for (int i = 0; i < 25; i++)
       {
@@ -157,12 +148,10 @@ String dictionary[27][2] = {{"A", "21"}, {"B", "1222"}, {"C", "1212"}, {"D", "12
 ISR(PCINT2_vect) // INT1 interrupts for PD3 PORTD interrupt
       {
         // interrupt code here
-        for (int i = 0;((PINC & (1 << BUT1)) >> BUT1) == LOW; i++){
-        
-
+        if(((PINC & (1 << BUT1)) >> BUT1) == LOW){       // if button1 is low, add 1ms to count and loop
           DelayMs(1);
+          i++;
         }
-      
       }
 
 // functions to use in main
